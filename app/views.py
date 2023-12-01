@@ -117,7 +117,25 @@ def detect_banana(request):
             image_file = form.cleaned_data['image']
 
             # Perform detection on the uploaded image
+
+            # Resize the uploaded image
+            max_width = 640  # Define your maximum width
+            max_height = 640  # Define your maximum height
+
+            # Resize the image while maintaining aspect ratio
             img = cv2.imdecode(np.fromstring(image_file.read(), np.uint8), cv2.IMREAD_COLOR)
+            height, width = img.shape[:2]
+
+            if width > max_width or height > max_height:
+                if width > height:
+                    new_width = max_width
+                    new_height = int(height * (max_width / width))
+                else:
+                    new_height = max_height
+                    new_width = int(width * (max_height / height))
+
+                img = cv2.resize(img, (new_width, new_height), interpolation=cv2.INTER_AREA)
+
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
             # Perform banana detection and get processed image and count
