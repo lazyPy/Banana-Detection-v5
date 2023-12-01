@@ -6,6 +6,7 @@ import numpy as np
 import tensorflow as tf
 import base64
 from collections import defaultdict
+from django.conf import settings
 
 
 def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleup=True, stride=32):
@@ -38,8 +39,20 @@ def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleu
 
 
 def perform_banana_detection(img):
+
+    bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+    file_name = 'best.tflite'
+
+    # Initialize S3 client
+    s3_client = settings.S3_CLIENT
+
+    # Load the TFLite model from S3
+    response = s3_client.get_object(Bucket=bucket_name, Key=file_name)
+    tflite_model_content = response['Body'].read()
+
     # Load the TFLite model
-    interpreter = tf.lite.Interpreter(model_path='static/best.tflite')
+    interpreter = tf.lite.Interpreter(model_content=tflite_model_content)
+    # interpreter = tf.lite.Interpreter(model_path='best.tflite')
 
     # Names of the classes according to class indices
     names = ['Bungulan', 'Cardava', 'Lacatan']
