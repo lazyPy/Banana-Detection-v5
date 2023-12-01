@@ -71,23 +71,23 @@ WSGI_APPLICATION = 'Banana_Detection.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': '2FDgAbcebEdFDdaBbGdG*cB-faEe-egd',
-        'HOST': 'monorail.proxy.rlwy.net',
-        'PORT': '47559',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'railway',
+#         'USER': 'postgres',
+#         'PASSWORD': '2FDgAbcebEdFDdaBbGdG*cB-faEe-egd',
+#         'HOST': 'monorail.proxy.rlwy.net',
+#         'PORT': '47559',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -123,31 +123,33 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AWS_ACCESS_KEY_ID = 'AKIA2ZBEBHMMJGIOEPUS '
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'banana-detection-bucket'
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-AWS_S3_VERITY = True
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# Configure Boto3 with these credentials
-import boto3
-
-def initialize_s3():
-    s3 = boto3.client(
-        's3',
-        aws_access_key_id=AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=AWS_SECRET_ACCESS_KEY
-    )
-    return s3
-
-S3_CLIENT = initialize_s3()
+# AWS_ACCESS_KEY_ID = 'AKIA2ZBEBHMMJGIOEPUS '
+# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_STORAGE_BUCKET_NAME = 'banana-detection-bucket'
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
+# AWS_S3_VERITY = True
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#
+# # Configure Boto3 with these credentials
+# import boto3
+#
+#
+# def initialize_s3():
+#     s3 = boto3.client(
+#         's3',
+#         aws_access_key_id=AWS_ACCESS_KEY_ID,
+#         aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+#     )
+#     return s3
+#
+#
+# S3_CLIENT = initialize_s3()

@@ -1,12 +1,18 @@
 from django.shortcuts import render
 from .forms import ImageUploadForm
 import cv2
-import random
 import numpy as np
-import tensorflow as tf
 import base64
 from collections import defaultdict
 # from django.conf import settings
+from django.apps import apps
+
+# Accessing initialized elements from the app configuration
+interpreter = apps.get_app_config('app').interpreter
+input_details = apps.get_app_config('app').input_details
+output_details = apps.get_app_config('app').output_details
+names = apps.get_app_config('app').names
+colors = apps.get_app_config('app').colors
 
 
 def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleup=True, stride=32):
@@ -39,7 +45,6 @@ def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleu
 
 
 def perform_banana_detection(img):
-
     # bucket_name = settings.AWS_STORAGE_BUCKET_NAME
     # file_name = 'best.tflite'
     #
@@ -49,16 +54,7 @@ def perform_banana_detection(img):
     # # Load the TFLite model from S3
     # response = s3_client.get_object(Bucket=bucket_name, Key=file_name)
     # tflite_model_content = response['Body'].read()
-    #
-    # # Load the TFLite model
     # interpreter = tf.lite.Interpreter(model_content=tflite_model_content)
-    interpreter = tf.lite.Interpreter(model_path='static/quant.tflite')
-
-    # Names of the classes according to class indices
-    names = ['Bungulan', 'Cardava', 'Lacatan']
-
-    # Creating random colors for bounding box visualization
-    colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(names)}
 
     # Perform letterboxing and preprocessing
     image = img.copy()
@@ -69,12 +65,6 @@ def perform_banana_detection(img):
 
     im = image.astype(np.float32)
     im /= 255
-
-    # Allocate tensors
-    interpreter.allocate_tensors()
-    # Get input and output tensors
-    input_details = interpreter.get_input_details()
-    output_details = interpreter.get_output_details()
 
     # Test the model on random input data
     input_shape = input_details[0]['shape']
@@ -110,8 +100,11 @@ def perform_banana_detection(img):
             count_objects += 1
             count_classes[names[cls_id]] += 1
 
-    # Find the class with the maximum count
-    majority_class = max(count_classes, key=count_classes.get)
+    # Ensure count_classes is not empty before finding the majority class
+    if count_classes:
+        majority_class = max(count_classes, key=count_classes.get)
+    else:
+        majority_class = "No banana detected"
 
     # Return the processed image, count of detected objects, and the majority detected class
     return ori_images[0], count_objects, majority_class
