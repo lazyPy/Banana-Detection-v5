@@ -52,7 +52,7 @@ def perform_banana_detection(img):
     #
     # # Load the TFLite model
     # interpreter = tf.lite.Interpreter(model_content=tflite_model_content)
-    interpreter = tf.lite.Interpreter(model_path='static/best.tflite')
+    interpreter = tf.lite.Interpreter(model_path='static/quant.tflite')
 
     # Names of the classes according to class indices
     names = ['Bungulan', 'Cardava', 'Lacatan']
