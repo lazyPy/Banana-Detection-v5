@@ -118,24 +118,28 @@ def detect_banana(request):
 
             # Perform detection on the uploaded image
 
-            # Resize the uploaded image
-            max_width = 640  # Define your maximum width
-            max_height = 640  # Define your maximum height
+            # Read the image as a NumPy array
+            img = np.fromstring(image_file.read(), np.uint8)
+
+            # Decode the image with OpenCV
+            img = cv2.imdecode(img, cv2.IMREAD_COLOR)
+
+            # Define the maximum width and height
+            max_width = 640
+            max_height = 640
+
+            # Use Pillow for efficient image resizing
+            from PIL import Image
+            img = Image.fromarray(img)
+            new_size = max_width, max_height
 
             # Resize the image while maintaining aspect ratio
-            img = cv2.imdecode(np.fromstring(image_file.read(), np.uint8), cv2.IMREAD_COLOR)
-            height, width = img.shape[:2]
+            img.thumbnail(new_size, Image.ANTIALIAS)
 
-            if width > max_width or height > max_height:
-                if width > height:
-                    new_width = max_width
-                    new_height = int(height * (max_width / width))
-                else:
-                    new_height = max_height
-                    new_width = int(width * (max_height / height))
+            # Convert the resized image back to NumPy array
+            img = np.array(img)
 
-                img = cv2.resize(img, (new_width, new_height), interpolation=cv2.INTER_AREA)
-
+            # Convert color space from BGR to RGB
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
             # Perform banana detection and get processed image and count
