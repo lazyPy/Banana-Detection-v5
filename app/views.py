@@ -92,11 +92,11 @@ def perform_banana_detection(img):
         name = names[cls_id]
         color = colors[name]
         name += ' ' + str(score)
-        cv2.rectangle(image, box[:2], box[2:], color, 2)
-        cv2.putText(image, name, (box[0], box[1] - 2), cv2.FONT_HERSHEY_SIMPLEX, 0.75, [225, 255, 255], thickness=2)
 
-        # Count object and class if score is above a certain threshold (e.g., 0.5)
-        if score > 0.5:
+        # Draw and count object and class if score is higher than 0.6
+        if score > 0.6:
+            cv2.rectangle(image, box[:2], box[2:], color, 2)
+            cv2.putText(image, name, (box[0], box[1] - 2), cv2.FONT_HERSHEY_SIMPLEX, 0.75, [225, 255, 255], thickness=2)
             count_objects += 1
             count_classes[names[cls_id]] += 1
 
