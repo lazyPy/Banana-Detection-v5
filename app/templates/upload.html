@@ -29,10 +29,7 @@
             <input id="id_image" type="file" name="image" style="display: none;">
         </label>
 
-        <div id="imageUploadingDetecting" class="text-center" style="display: none;">
-            <div class="spinner-grow text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
+        <div id="processingImage" class="text-center" style="display: none;">
             <div class="spinner-grow text-success" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
@@ -49,7 +46,7 @@
                 <span class="visually-hidden">Loading...</span>
             </div>
             <br>
-            <p class="fw-medium" role="status">Uploading and Detecting Image...</p>
+            <p class="fw-medium" role="status">Processing Image...</p>
         </div>
 
     </form>
@@ -58,7 +55,7 @@
 <script>
     document.getElementById('id_image').addEventListener('change', function() {
         document.getElementById('imageInputLabel').style.display = 'none'; // Hide the 'Select Image' button
-        document.getElementById('imageUploadingDetecting').style.display = 'block'; // Show the uploading animation
+        document.getElementById('processingImage').style.display = 'block'; // Show the processing animation
         document.getElementById('imageUploadForm').submit();
     });
 
