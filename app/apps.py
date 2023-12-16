@@ -9,7 +9,7 @@ class AppConfig(AppConfig):
 
     def ready(self):
         # Load the TFLite model during application startup
-        interpreter = tf.lite.Interpreter(model_path='static/quant.tflite')
+        interpreter = tf.lite.Interpreter(model_path='static/model.tflite')
         interpreter.allocate_tensors()
 
         # Get input and output tensors
