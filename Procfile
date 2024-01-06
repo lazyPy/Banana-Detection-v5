@@ -1,0 +1,1 @@
+web: gunicorn Banana_Detection.wsgi --log-file -
