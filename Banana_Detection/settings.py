@@ -25,6 +25,7 @@ SECRET_KEY = 'django-insecure-h&5gi+xlq_1ywcqp7%mo(axqbxq0ip_zb72%ovn+wjv_wod*wl
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://banana-detection.up.railway.app']
 
 # Application definition
 
